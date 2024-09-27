@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexvia Photo Session</title>
+
     <style>
         body {
             position: absolute;
@@ -12,8 +13,8 @@
             margin: 0;
             top: -58px;
             left: -30px;
-            overflow: hidden;
         }
+
         iframe {
             height: 100vh;
             width: 100%;
@@ -22,43 +23,20 @@
     </style>
 </head>
 <body>
-    <!-- Dynamic iFrame Container -->
-    <div id="iframe-container"></div>
-
-    <script>
-        (function() {
-            try {
-                // Verify if the parent URL and parameters are accessible
-                const parentURL = window.parent.location ? window.parent.location.search : '';
-                const params = new URLSearchParams(parentURL);
-                const photoSessionType = params.get('PHOTOSESSIONTYPE');
-
-                // Determine iframe source based on PHOTOSESSIONTYPE value
-                const iframeSrc = (photoSessionType === 'Regular' || !photoSessionType) 
-                    ? 'https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true'
-                    : 'https://embed.ycb.me?domain=nexvia-photoshowcasesession&copyparameters=true';
-
-                // Create and configure the iframe element
-                const iframe = document.createElement('iframe');
-                iframe.src = iframeSrc;
-                iframe.loading = 'lazy'; // Use lazy loading for performance
-                iframe.setAttribute('data-domain', 'nexvia-photosession');
-                iframe.setAttribute('data-type', 'embed');
-                
-                // Append the iframe to the container
-                document.getElementById('iframe-container').appendChild(iframe);
-            } catch (error) {
-                console.error('Error loading iframe:', error);
-
-                // Optional: Display a fallback error message or content
-                const errorMessage = document.createElement('div');
-                errorMessage.textContent = 'Failed to load the iframe content. Please check the configuration.';
-                errorMessage.style.color = 'red';
-                errorMessage.style.padding = '20px';
-                errorMessage.style.textAlign = 'center';
-                document.getElementById('iframe-container').appendChild(errorMessage);
-            }
-        })();
-    </script>
+    <!-- Embed Script -->
+    <iframe src="https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true"></iframe>
+    <script src="params.js"></script>
 </body>
 </html>
+
+// Extract URL parameters from the parent window
+const params = new URLSearchParams(window.parent.location.search);
+
+// Iterate over the parameters and append them to the iframe's URL
+params.forEach((value, key) => {
+    document.querySelectorAll('iframe').forEach(iframe => {
+        let iframeSrc = new URL(iframe.src);
+        iframeSrc.searchParams.set(key, value);
+        iframe.src = iframeSrc.toString();
+    });
+});
