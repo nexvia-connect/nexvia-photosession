@@ -43,15 +43,14 @@
     <script>
         function getParentUrlParams() {
             try {
-                // Attempt to get the URL parameters from the parent page
                 const urlParams = new URLSearchParams(window.parent.location.search);
                 return urlParams.get('PHOTOSESSIONTYPE');
             } catch (e) {
-                // If access is blocked, default to 'Regular'
+                console.error("Unable to access parent URL parameters:", e); // Log the error
                 return 'Regular';
             }
         }
-
+        
         // Determine the data-domain value based on PHOTOSESSIONTYPE
         const photoSessionType = getParentUrlParams();
         const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
