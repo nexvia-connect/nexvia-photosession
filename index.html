@@ -24,21 +24,17 @@
 </head>
 <body>
     <!-- Embed Script -->
-    <iframe id="photoSessionFrame"></iframe>
-
-    <script src="params.js"></script>
+    <div id="iframe-container"></div>
     <script>
-        (function() {
-            // Assuming PHOTOSESSIONTYPE is defined in params.js or passed through the URL
-            const params = new URLSearchParams(window.location.search);
-            const photoSessionType = params.get('PHOTOSESSIONTYPE');
+        const params = new URLSearchParams(window.location.search);
+        const photoSessionType = params.get('PHOTOSESSIONTYPE');
 
-            const iframeSrc = photoSessionType === "Regular" 
-                ? "https://embed.ycb.me?domain=nexvia-photosession" 
-                : "https://embed.ycb.me?domain=nexvia-photoshowcasesession";
+        const iframeSrc = photoSessionType === 'Regular' 
+            ? 'https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true' 
+            : 'https://embed.ycb.me?domain=nexvia-photoshowcasesession&copyparameters=true';
 
-            document.getElementById('photoSessionFrame').src = iframeSrc;
-        })();
+        document.getElementById('iframe-container').innerHTML = `<iframe src="${iframeSrc}"></iframe>`;
     </script>
+    <script src="params.js"></script>
 </body>
 </html>
