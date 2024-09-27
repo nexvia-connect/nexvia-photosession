@@ -29,7 +29,7 @@
         const params = new URLSearchParams(window.location.search);
         const photoSessionType = params.get('PHOTOSESSIONTYPE');
 
-        const iframeSrc = photoSessionType === 'Regular' 
+        const iframeSrc = photoSessionType === 'Regular' || !photoSessionType
             ? 'https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true' 
             : 'https://embed.ycb.me?domain=nexvia-photoshowcasesession&copyparameters=true';
 
