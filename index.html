@@ -12,6 +12,7 @@
             margin: 0;
             top: -58px;
             left: -30px;
+            overflow: hidden;
         }
         iframe {
             height: 100vh;
@@ -21,27 +22,43 @@
     </style>
 </head>
 <body>
-    <!-- Dynamic iFrame -->
+    <!-- Dynamic iFrame Container -->
     <div id="iframe-container"></div>
 
     <script>
-        // Extract URL parameters from the parent window
-        const params = new URLSearchParams(window.parent.location.search);
-        const photoSessionType = params.get('PHOTOSESSIONTYPE');
+        (function() {
+            try {
+                // Verify if the parent URL and parameters are accessible
+                const parentURL = window.parent.location ? window.parent.location.search : '';
+                const params = new URLSearchParams(parentURL);
+                const photoSessionType = params.get('PHOTOSESSIONTYPE');
 
-        // Determine iframe source based on PHOTOSESSIONTYPE value
-        const iframeSrc = (photoSessionType === 'Regular' || !photoSessionType) 
-            ? 'https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true'
-            : 'https://embed.ycb.me?domain=nexvia-photoshowcasesession&copyparameters=true';
+                // Determine iframe source based on PHOTOSESSIONTYPE value
+                const iframeSrc = (photoSessionType === 'Regular' || !photoSessionType) 
+                    ? 'https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true'
+                    : 'https://embed.ycb.me?domain=nexvia-photoshowcasesession&copyparameters=true';
 
-        // Create and append the iframe dynamically
-        const iframe = document.createElement('iframe');
-        iframe.src = iframeSrc;
+                // Create and configure the iframe element
+                const iframe = document.createElement('iframe');
+                iframe.src = iframeSrc;
+                iframe.loading = 'lazy'; // Use lazy loading for performance
+                iframe.setAttribute('data-domain', 'nexvia-photosession');
+                iframe.setAttribute('data-type', 'embed');
+                
+                // Append the iframe to the container
+                document.getElementById('iframe-container').appendChild(iframe);
+            } catch (error) {
+                console.error('Error loading iframe:', error);
 
-        // Set attributes required for YCBM integration
-        iframe.setAttribute('data-domain', 'nexvia-photosession');
-        iframe.setAttribute('data-type', 'embed');
-        document.getElementById('iframe-container').appendChild(iframe);
+                // Optional: Display a fallback error message or content
+                const errorMessage = document.createElement('div');
+                errorMessage.textContent = 'Failed to load the iframe content. Please check the configuration.';
+                errorMessage.style.color = 'red';
+                errorMessage.style.padding = '20px';
+                errorMessage.style.textAlign = 'center';
+                document.getElementById('iframe-container').appendChild(errorMessage);
+            }
+        })();
     </script>
 </body>
 </html>
