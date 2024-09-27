@@ -12,5 +12,14 @@
         data-domain="nexvia-photosession"
         data-copyparameters></script>
     <script src="params.js"></script>
+
+    <script>
+        window.onload = function() {
+            var element = document.getElementById("appTypeMainContentHeader");
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        };
+    </script>
 </body>
 </html>
