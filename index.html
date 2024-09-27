@@ -14,12 +14,20 @@
     <script src="params.js"></script>
 
     <script>
-        window.onload = function() {
-            var element = document.getElementById("appTypeMainContentHeader");
-            if (element) {
-                element.parentNode.removeChild(element);
+        // Function to continuously check for the element and remove it
+        function removeElement() {
+            const targetElement = document.querySelector(".contentStickyTop_appTypeMainContentHeader_container");
+            if (targetElement) {
+                targetElement.remove();
             }
-        };
+        }
+
+        // Use a MutationObserver to detect changes in the DOM
+        const observer = new MutationObserver(removeElement);
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Call the function initially in case the element is already present
+        removeElement();
     </script>
 </body>
 </html>
