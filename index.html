@@ -14,17 +14,25 @@
     <script src="params.js"></script>
 
     <script>
-        function removeElement() {
-            const targetElement = document.querySelector(".contentStickyTop_appTypeMainContentHeader_container");
-            if (targetElement) {
-                targetElement.remove();
+        // Function to remove multiple elements based on class names
+        function removeElements() {
+            // Remove specific container element
+            const headerElement = document.getElementById("appTypeMainContentHeader");
+            if (headerElement) {
+                headerElement.remove();
             }
+
+            // Remove all elements with class 'Icon-module__icon___7t6vK'
+            const iconElements = document.querySelectorAll(".Icon-module__icon___7t6vK");
+            iconElements.forEach(element => element.remove());
         }
 
-        const observer = new MutationObserver(removeElement);
+        // Use MutationObserver to detect dynamic DOM changes
+        const observer = new MutationObserver(removeElements);
         observer.observe(document.body, { childList: true, subtree: true });
 
-        removeElement();
+        // Call the function initially in case the elements are already present
+        removeElements();
     </script>
 </body>
 </html>
