@@ -43,11 +43,11 @@
     <script>
         function getParentUrlParams() {
             try {
-                const urlParams = new URLSearchParams(window.parent.location.search);
+                const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get('PHOTOSESSIONTYPE');
             } catch (e) {
-                console.error("Unable to access parent URL parameters:", e); // Log the error
-                return 'NotRegular';
+                console.error("Unable to access URL parameters:", e); // Log the error
+                return 'Error';
             }
         }
         
