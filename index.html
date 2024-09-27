@@ -52,18 +52,23 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Get the PHOTOSESSIONTYPE from the URL parameters
             const photoSessionType = getParentUrlParams();
+
+            // Display the PHOTOSESSIONTYPE value in the debug-info div
             document.getElementById('photosession-type').innerText = photoSessionType;
+
+            // Determine the domain value based on the PHOTOSESSIONTYPE
+            const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+
+            // Create and insert the embed script dynamically
+            const script = document.createElement('script');
+            script.src = 'https://embed.ycb.me';
+            script.async = true;
+            script.setAttribute('data-domain', domain);
+            script.setAttribute('data-copyparameters', '');
+            document.body.appendChild(script);
         });
-
-
-        // Create and insert the embed script dynamically
-        const script = document.createElement('script');
-        script.src = 'https://embed.ycb.me';
-        script.async = true;
-        script.setAttribute('data-domain', domain);
-        script.setAttribute('data-copyparameters', '');
-        document.body.appendChild(script);
     </script>
     <script src="params.js"></script>
 </body>
