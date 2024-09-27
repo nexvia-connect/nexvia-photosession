@@ -28,12 +28,26 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const photoSessionType = params.get('PHOTOSESSIONTYPE');
-
+    
         const iframeSrc = photoSessionType === 'Regular' || !photoSessionType
             ? 'https://embed.ycb.me?domain=nexvia-photosession&copyparameters=true' 
             : 'https://embed.ycb.me?domain=nexvia-photoshowcasesession&copyparameters=true';
-
-        document.getElementById('iframe-container').innerHTML = `<iframe src="${iframeSrc}"></iframe>`;
+    
+        // Create the iframe element and append it to the container
+        const iframeElement = document.createElement('iframe');
+        iframeElement.src = iframeSrc;
+        iframeElement.style.width = '100%';
+        iframeElement.style.height = '100vh';
+        iframeElement.style.border = 'none';
+    
+        // Append the iframe to the container
+        document.getElementById('iframe-container').appendChild(iframeElement);
+    
+        // Add a load event listener to the iframe
+        iframeElement.onload = function() {
+            console.log('Iframe is fully loaded and ready.');
+            // Place any additional logic that depends on iframe load here.
+        };
     </script>
     <script src="params.js"></script>
 </body>
