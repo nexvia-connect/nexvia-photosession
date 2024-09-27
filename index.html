@@ -14,25 +14,39 @@
     <script src="params.js"></script>
 
     <script>
-        // Function to remove multiple elements based on class names
+        // Function to remove specific elements based on their class or ID
         function removeElements() {
-            // Remove specific container element
+            // Remove the element with ID 'appTypeMainContentHeader'
             const headerElement = document.getElementById("appTypeMainContentHeader");
             if (headerElement) {
                 headerElement.remove();
+                console.log("Removed header element with ID: appTypeMainContentHeader");
             }
 
             // Remove all elements with class 'Icon-module__icon___7t6vK'
             const iconElements = document.querySelectorAll(".Icon-module__icon___7t6vK");
-            iconElements.forEach(element => element.remove());
+            iconElements.forEach(element => {
+                element.remove();
+                console.log("Removed icon element with class: Icon-module__icon___7t6vK");
+            });
         }
 
-        // Use MutationObserver to detect dynamic DOM changes
-        const observer = new MutationObserver(removeElements);
+        // Use setInterval to repeatedly check and remove the elements every 500ms
+        const interval = setInterval(() => {
+            removeElements();
+        }, 500);
+
+        // Set up a MutationObserver to remove elements if they appear dynamically
+        const observer = new MutationObserver(() => {
+            removeElements();
+        });
         observer.observe(document.body, { childList: true, subtree: true });
 
-        // Call the function initially in case the elements are already present
-        removeElements();
+        // Stop the interval after 10 seconds if the elements are removed successfully
+        setTimeout(() => {
+            clearInterval(interval);
+            console.log("Stopped the interval for element removal.");
+        }, 10000); // 10 seconds
     </script>
 </body>
 </html>
