@@ -6,31 +6,17 @@
     <title>Nexvia Photo Session</title>
 
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevent scrolling on the main page */
-            height: 100%; /* Set height to 100% */
-            width: 100%; /* Set width to 100% */
-            box-sizing: border-box;
-        }
-
         body {
             position: absolute;
             width: 590px;
             box-sizing: border-box;
+            margin: 0;
             top: -58px;
             left: -30px;
         }
 
-        /* Hide scrollbars for all elements */
-        * {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE 10+ */
-        }
-
-        *::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, and Opera */
+        body > iframe {
+            height: 100% !important;
         }
     </style>
 </head>
@@ -42,19 +28,5 @@
         data-copyparameters></script>
     <script src="params.js"></script>
 
-    <!-- JavaScript to handle dynamic resizing -->
-    <script>
-        // Force document dimensions to prevent scrolling
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-
-        // Disable scroll on resize or any layout changes
-        window.addEventListener('resize', function () {
-            document.documentElement.scrollTop = 0;
-            document.documentElement.scrollLeft = 0;
-            document.body.scrollTop = 0;
-            document.body.scrollLeft = 0;
-        });
-    </script>
 </body>
 </html>
