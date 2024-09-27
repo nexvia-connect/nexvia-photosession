@@ -39,27 +39,30 @@
     <div class="debug-info" id="debug-info">
         PHOTOSESSIONTYPE: <span id="photosession-type">Loading...</span>
     </div>
-    
-    <script>
-        function getParentUrlParams() {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get('PHOTOSESSIONTYPE');
-            } catch (e) {
-                console.error("Unable to access URL parameters:", e); // Log the error
-                return 'Error';
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Get the PHOTOSESSIONTYPE from the URL parameters
-            const photoSessionType = getParentUrlParams();
 
+<script>
+        // Function to get URL parameters
+        function getUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('PHOTOSESSIONTYPE');
+        }
+
+        // Function to update the page content based on URL changes
+        function updateContent() {
+            // Get the PHOTOSESSIONTYPE value from the URL parameters
+            const photoSessionType = getUrlParams();
+            
             // Display the PHOTOSESSIONTYPE value in the debug-info div
             document.getElementById('photosession-type').innerText = photoSessionType;
 
             // Determine the domain value based on the PHOTOSESSIONTYPE
             const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+
+            // Remove existing embed script if it exists
+            const existingScript = document.querySelector('script[data-domain]');
+            if (existingScript) {
+                existingScript.remove();
+            }
 
             // Create and insert the embed script dynamically
             const script = document.createElement('script');
@@ -68,7 +71,20 @@
             script.setAttribute('data-domain', domain);
             script.setAttribute('data-copyparameters', '');
             document.body.appendChild(script);
-        });
+        }
+
+        // Initial content update
+        updateContent();
+
+        // Set up a polling interval to check for URL parameter changes every 2 seconds
+        let previousParams = window.location.search;
+        setInterval(() => {
+            // If the URL parameters have changed, update the content
+            if (window.location.search !== previousParams) {
+                previousParams = window.location.search;
+                updateContent();
+            }
+        }, 2000); // Adjust the interval time as needed
     </script>
     <script src="params.js"></script>
 </body>
