@@ -29,56 +29,20 @@
     <script src="params.js"></script>
 
     <script>
-        // Function to remove specified elements by their class or ID
-        function removeElements() {
-            // Remove the element with ID 'appTypeMainContentHeader'
-            const headerElement = document.getElementById("appTypeMainContentHeader");
-            if (headerElement) {
-                headerElement.parentNode.removeChild(headerElement);
-                console.log("Removed header element with ID: appTypeMainContentHeader");
-            }
-
-            // Remove all elements with class 'Icon-module__icon___7t6vK'
-            const iconElements = document.querySelectorAll(".Icon-module__icon___7t6vK");
-            iconElements.forEach(element => {
-                element.parentNode.removeChild(element);
-                console.log("Removed icon element with class: Icon-module__icon___7t6vK");
-            });
+        // Function to send messages to the iframe
+        function sendMessageToIframe(action) {
+            const iframe = document.getElementById('embeddedIframe');
+            iframe.contentWindow.postMessage(
+                { action: action }, 
+                'https://nexvia-photosession.ycb.me' // Specify the iframe's origin
+            );
         }
 
-        // Function to ensure the DOM is fully loaded and ready
-        function onReady(callback) {
-            if (document.readyState !== 'loading') {
-                callback();
-            } else {
-                document.addEventListener('DOMContentLoaded', callback);
-            }
-        }
+        // Send a message to remove elements in the iframe
+        sendMessageToIframe("removeElements");
 
-        // Function to ensure the window is fully loaded
-        function onWindowLoad(callback) {
-            window.addEventListener('load', callback);
-        }
-
-        // Use onReady and onWindowLoad to ensure everything is ready
-        onReady(() => {
-            console.log("DOM is ready, starting element removal.");
-            // Use setInterval to repeatedly check for and remove elements
-            const interval = setInterval(() => {
-                removeElements();
-            }, 500);
-
-            // Clear the interval after 10 seconds
-            setTimeout(() => {
-                clearInterval(interval);
-                console.log("Stopped the interval for element removal.");
-            }, 10000); // 10 seconds
-        });
-
-        onWindowLoad(() => {
-            console.log("Window is fully loaded, ensuring elements are removed.");
-            removeElements(); // Attempt to remove elements again after full page load
-        });
+        // Send a message to remove borders in the iframe
+        sendMessageToIframe("removeBorders");
     </script>
 </body>
 </html>
