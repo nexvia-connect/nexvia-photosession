@@ -51,9 +51,10 @@
             }
         }
         
-        // Determine the data-domain value based on PHOTOSESSIONTYPE
-        const photoSessionType = getParentUrlParams();
-        const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+        document.addEventListener('DOMContentLoaded', () => {
+            const photoSessionType = getParentUrlParams();
+            document.getElementById('photosession-type').innerText = photoSessionType;
+        });
 
 
         // Create and insert the embed script dynamically
