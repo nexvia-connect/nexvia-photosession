@@ -18,11 +18,25 @@
 </head>
 <body>
     <!-- Embed Script -->
-    <script src="https://embed.ycb.me"
-        async="true"
-        data-domain="nexvia-photosession"
-        data-copyparameters></script>
-    <script src="params.js"></script>
+    <script>
+        // Function to get URL parameters from the parent page
+        function getParentUrlParams() {
+            const urlParams = new URLSearchParams(window.parent.location.search);
+            return urlParams.get('PHOTOSESSIONTYPE');
+        }
 
+        // Determine the data-domain value based on PHOTOSESSIONTYPE
+        const photoSessionType = getParentUrlParams();
+        const domain = photoSessionType === 'Regular' ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+
+        // Create and insert the embed script dynamically
+        const script = document.createElement('script');
+        script.src = 'https://embed.ycb.me';
+        script.async = true;
+        script.setAttribute('data-domain', domain);
+        script.setAttribute('data-copyparameters', '');
+        document.body.appendChild(script);
+    </script>
+    <script src="params.js"></script>
 </body>
 </html>
