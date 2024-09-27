@@ -38,7 +38,8 @@
 
         // Determine the data-domain value based on PHOTOSESSIONTYPE
         const photoSessionType = getParentUrlParams();
-        const domain = photoSessionType === 'Regular' ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+        const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+
 
         // Create and insert the embed script dynamically
         const script = document.createElement('script');
