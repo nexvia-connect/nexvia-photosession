@@ -16,17 +16,29 @@
         }
 
         iframe {
-            height: 100vh !important;
+            height: 100vh;
+            width: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
     <!-- Embed Script -->
-    <script src="https://embed.ycb.me"
-        async="true"
-        data-domain="nexvia-photosession"
-        data-copyparameters></script>
-    <script src="params.js"></script>
+    <iframe id="photoSessionFrame"></iframe>
 
+    <script src="params.js"></script>
+    <script>
+        (function() {
+            // Assuming PHOTOSESSIONTYPE is defined in params.js or passed through the URL
+            const params = new URLSearchParams(window.location.search);
+            const photoSessionType = params.get('PHOTOSESSIONTYPE');
+
+            const iframeSrc = photoSessionType === "Regular" || !photoSessionType
+                ? "https://embed.ycb.me?domain=nexvia-photosession"
+                : "https://embed.ycb.me?domain=nexvia-photoshowcasesession";
+
+            document.getElementById('photoSessionFrame').src = iframeSrc;
+        })();
+    </script>
 </body>
 </html>
