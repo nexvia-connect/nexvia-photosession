@@ -4,45 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexvia Photo Session</title>
-
     <style>
-        .AppointmentTypeGroupCalendar-module__groupWrapper___mkxVj {
-            border: none !important;  /* Remove all borders */
+        /* Styling to crop the iframe content */
+        .cropped-iframe-container {
+            position: relative;
+            width: calc(100% - 60px); /* Reduce width by 60px (30px on each side) */
+            height: calc(100vh - 100px); /* Reduce height by 100px from top */
+            overflow: hidden; /* Hide overflow content */
+            margin: 0 auto; /* Center horizontally */
+            margin-top: 100px; /* Add space at the top */
         }
 
-        .contentStickyTop_appTypeMainContentHeader_container SelectAppointmentTypeScreen-module__toolbar___1HzJW {
-            display: none !important;
+        .cropped-iframe {
+            position: absolute;
+            top: -100px; /* Move content 100px upwards */
+            left: -30px; /* Move content 30px leftwards */
+            width: calc(100% + 60px); /* Expand width by 60px */
+            height: calc(100% + 100px); /* Expand height by 100px */
+            border: 0; /* Remove iframe border */
         }
-
-        #contentStickyTop_appTypeMainContentHeader_container SelectAppointmentTypeScreen-module__toolbar___1HzJW {
-            display: none !important;
-        }
-        
     </style>
 </head>
 <body>
-    <!-- Embed Script -->
+    <div class="cropped-iframe-container">
+        <!-- Embed the iFrame within a container that crops it -->
+        <iframe class="cropped-iframe" src="https://embed.ycb.me?domain=nexvia-photosession" frameborder="0" allow="payment"></iframe>
+    </div>
+    <!-- External Scripts -->
     <script src="https://embed.ycb.me"
         async="true"
         data-domain="nexvia-photosession"
         data-copyparameters></script>
     <script src="params.js"></script>
-
-    <script>
-        // Function to send messages to the iframe
-        function sendMessageToIframe(action) {
-            const iframe = document.getElementById('embeddedIframe');
-            iframe.contentWindow.postMessage(
-                { action: action }, 
-                'https://nexvia-photosession.ycb.me' // Specify the iframe's origin
-            );
-        }
-
-        // Send a message to remove elements in the iframe
-        sendMessageToIframe("removeElements");
-
-        // Send a message to remove borders in the iframe
-        sendMessageToIframe("removeBorders");
-    </script>
 </body>
 </html>
