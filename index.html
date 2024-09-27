@@ -19,10 +19,15 @@
 <body>
     <!-- Embed Script -->
     <script>
-        // Function to get URL parameters from the parent page
         function getParentUrlParams() {
-            const urlParams = new URLSearchParams(window.parent.location.search);
-            return urlParams.get('PHOTOSESSIONTYPE');
+            try {
+                // Attempt to get the URL parameters from the parent page
+                const urlParams = new URLSearchParams(window.parent.location.search);
+                return urlParams.get('PHOTOSESSIONTYPE');
+            } catch (e) {
+                // If access is blocked, default to 'Regular'
+                return 'Regular';
+            }
         }
 
         // Determine the data-domain value based on PHOTOSESSIONTYPE
