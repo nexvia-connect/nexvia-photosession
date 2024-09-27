@@ -14,39 +14,56 @@
     <script src="params.js"></script>
 
     <script>
-        // Function to remove specific elements based on their class or ID
+        // Function to remove specified elements by their class or ID
         function removeElements() {
             // Remove the element with ID 'appTypeMainContentHeader'
             const headerElement = document.getElementById("appTypeMainContentHeader");
             if (headerElement) {
-                headerElement.remove();
+                headerElement.parentNode.removeChild(headerElement);
                 console.log("Removed header element with ID: appTypeMainContentHeader");
             }
 
             // Remove all elements with class 'Icon-module__icon___7t6vK'
             const iconElements = document.querySelectorAll(".Icon-module__icon___7t6vK");
             iconElements.forEach(element => {
-                element.remove();
+                element.parentNode.removeChild(element);
                 console.log("Removed icon element with class: Icon-module__icon___7t6vK");
             });
         }
 
-        // Use setInterval to repeatedly check and remove the elements every 500ms
-        const interval = setInterval(() => {
-            removeElements();
-        }, 500);
+        // Function to ensure the DOM is fully loaded and ready
+        function onReady(callback) {
+            if (document.readyState !== 'loading') {
+                callback();
+            } else {
+                document.addEventListener('DOMContentLoaded', callback);
+            }
+        }
 
-        // Set up a MutationObserver to remove elements if they appear dynamically
-        const observer = new MutationObserver(() => {
-            removeElements();
+        // Function to ensure the window is fully loaded
+        function onWindowLoad(callback) {
+            window.addEventListener('load', callback);
+        }
+
+        // Use onReady and onWindowLoad to ensure everything is ready
+        onReady(() => {
+            console.log("DOM is ready, starting element removal.");
+            // Use setInterval to repeatedly check for and remove elements
+            const interval = setInterval(() => {
+                removeElements();
+            }, 500);
+
+            // Clear the interval after 10 seconds
+            setTimeout(() => {
+                clearInterval(interval);
+                console.log("Stopped the interval for element removal.");
+            }, 10000); // 10 seconds
         });
-        observer.observe(document.body, { childList: true, subtree: true });
 
-        // Stop the interval after 10 seconds if the elements are removed successfully
-        setTimeout(() => {
-            clearInterval(interval);
-            console.log("Stopped the interval for element removal.");
-        }, 10000); // 10 seconds
+        onWindowLoad(() => {
+            console.log("Window is fully loaded, ensuring elements are removed.");
+            removeElements(); // Attempt to remove elements again after full page load
+        });
     </script>
 </body>
 </html>
