@@ -41,60 +41,51 @@
     </div>
 
 <script>
-    // Function to get URL parameters
-    function getUrlParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('PHOTOSESSIONTYPE');
-    }
-
-    // Function to update the page content based on URL changes
-    function updateContent() {
-        // Get the PHOTOSESSIONTYPE value from the URL parameters
-        const photoSessionType = getUrlParams();
-        
-        // Display the PHOTOSESSIONTYPE value in the debug-info div
-        document.getElementById('photosession-type').innerText = photoSessionType;
-
-        // Determine the domain value based on the PHOTOSESSIONTYPE
-        const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
-
-        // Remove existing embed script if it exists
-        const existingScript = document.querySelector('script[data-domain]');
-        if (existingScript) {
-            existingScript.remove();
+        // Function to get URL parameters
+        function getUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('PHOTOSESSIONTYPE');
         }
 
-        // Create and insert the embed script dynamically
-        const script = document.createElement('script');
-        script.src = 'https://embed.ycb.me';
-        script.async = true;
-        script.setAttribute('data-domain', domain);
-        script.setAttribute('data-copyparameters', '');
-        document.body.appendChild(script);
-    }
+        // Function to update the page content based on URL changes
+        function updateContent() {
+            // Get the PHOTOSESSIONTYPE value from the URL parameters
+            const photoSessionType = getUrlParams();
+            
+            // Display the PHOTOSESSIONTYPE value in the debug-info div
+            document.getElementById('photosession-type').innerText = photoSessionType;
 
-    // Initial content update
-    updateContent();
+            // Determine the domain value based on the PHOTOSESSIONTYPE
+            const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
 
-    // Function to observe changes in the document's body
-    function observeBodyChanges() {
-        const observer = new MutationObserver(() => {
-            console.log("Detected changes in the body!");
-            // Call updateContent if any mutation is observed
-            updateContent();
-        });
+            // Remove existing embed script if it exists
+            const existingScript = document.querySelector('script[data-domain]');
+            if (existingScript) {
+                existingScript.remove();
+            }
 
-        // Start observing the entire body for changes
-        observer.observe(document.body, {
-            attributes: true, // Watch for changes to attributes
-            childList: true,  // Watch for addition/removal of child nodes
-            subtree: true     // Watch the entire subtree of the body
-        });
-    }
+            // Create and insert the embed script dynamically
+            const script = document.createElement('script');
+            script.src = 'https://embed.ycb.me';
+            script.async = true;
+            script.setAttribute('data-domain', domain);
+            script.setAttribute('data-copyparameters', '');
+            document.body.appendChild(script);
+        }
 
-    // Start observing body changes
-    observeBodyChanges();
-</script>
-<script src="params.js"></script>
+        // Initial content update
+        updateContent();
+
+        // Set up a polling interval to check for URL parameter changes every 2 seconds
+        let previousParams = window.location.search;
+        setInterval(() => {
+            // If the URL parameters have changed, update the content
+            if (window.location.search !== previousParams) {
+                previousParams = window.location.search;
+                updateContent();
+            }
+        }, 200); // Adjust the interval time as needed
+    </script>
+    <script src="params.js"></script>
 </body>
 </html>
