@@ -73,19 +73,37 @@
             document.body.appendChild(script);
         }
 
+        // Function to observe URL changes
+        function observeUrlChanges() {
+            // Store the current URL
+            let currentUrl = window.location.href;
+
+            // Set up a MutationObserver to detect changes to the URL
+            const observer = new MutationObserver(() => {
+                // Check if the URL has changed
+                if (currentUrl !== window.location.href) {
+                    currentUrl = window.location.href;
+                    updateContent(); // Update content when URL changes
+                }
+            });
+
+            // Observe changes in the document for added or removed nodes
+            observer.observe(document, { childList: true, subtree: true });
+
+            // Fallback: Check every 200ms for URL changes
+            setInterval(() => {
+                if (currentUrl !== window.location.href) {
+                    currentUrl = window.location.href;
+                    updateContent(); // Update content when URL changes
+                }
+            }, 200);
+        }
+
         // Initial content update
         updateContent();
 
-        // Set up a polling interval to check for URL parameter changes every 2 seconds
-        let previousParams = window.location.search;
-        setInterval(() => {
-            // If the URL parameters have changed, update the content
-            if (window.location.search !== previousParams) {
-                previousParams = window.location.search;
-                updateContent();
-            }
-        }, 200); // Adjust the interval time as needed
+        // Start observing for URL changes
+        observeUrlChanges();
     </script>
-    <script src="params.js"></script>
 </body>
 </html>
