@@ -80,7 +80,6 @@
 
             // Set up a MutationObserver to detect changes to the URL
             const observer = new MutationObserver(() => {
-                // Check if the URL has changed
                 if (currentUrl !== window.location.href) {
                     currentUrl = window.location.href;
                     updateContent(); // Update content when URL changes
@@ -89,8 +88,25 @@
 
             // Observe changes in the document for added or removed nodes
             observer.observe(document, { childList: true, subtree: true });
+        }
 
-            // Fallback: Check every 200ms for URL changes
+        // Function to listen for popstate events
+        function listenForPopstateChanges() {
+            window.addEventListener('popstate', () => {
+                updateContent(); // Update content when the history state changes
+            });
+        }
+
+        // Function to listen for hash changes (if applicable)
+        function listenForHashChanges() {
+            window.addEventListener('hashchange', () => {
+                updateContent(); // Update content when the hash changes
+            });
+        }
+
+        // Fallback: Interval check for URL changes
+        function checkUrlPeriodically() {
+            let currentUrl = window.location.href;
             setInterval(() => {
                 if (currentUrl !== window.location.href) {
                     currentUrl = window.location.href;
@@ -102,8 +118,11 @@
         // Initial content update
         updateContent();
 
-        // Start observing for URL changes
-        observeUrlChanges();
+        // Listen for different types of changes
+        listenForPopstateChanges();    // Use popstate event listener
+        listenForHashChanges();        // Use hashchange event listener if applicable
+        observeUrlChanges();           // Use MutationObserver as a fallback
+        checkUrlPeriodically();        // Final fallback: interval check
     </script>
 </body>
 </html>
