@@ -11,7 +11,7 @@
             width: 1000px;
             box-sizing: border-box;
             margin: 0;
-            top: -31px;
+            top: -91px;
             left: -190px;
             height: 100vh;
             clip-path: inset(0 200px 0 0);
@@ -42,6 +42,29 @@
     </div>
 
 <script>
+        // Function to adjust top on interaction
+        function adjustTopOnInteraction() {
+            const body = document.body;
+    
+            // Change the top position on user interaction
+            const handleInteraction = () => {
+                body.style.top = '-31px'; // Adjust the position
+                removeEventListeners(); // Remove listeners after adjustment
+            };
+    
+            // Add event listeners for different interaction types
+            const events = ['click', 'keydown', 'mousemove', 'touchstart'];
+            events.forEach(event => window.addEventListener(event, handleInteraction, { once: true }));
+    
+            // Clean up after the first interaction
+            const removeEventListeners = () => {
+                events.forEach(event => window.removeEventListener(event, handleInteraction));
+            };
+        }
+
+    // Initialize adjustment on page load
+    adjustTopOnInteraction();
+    
         // Function to get URL parameters
         function getUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
