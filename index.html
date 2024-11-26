@@ -43,27 +43,21 @@
 
 <script>
         // Function to adjust top on interaction
-        function adjustTopOnInteraction() {
+        function adjustTopOnClick() {
             const body = document.body;
     
-            // Change the top position on user interaction
-            const handleInteraction = () => {
+            // Event listener for the first click
+            const handleClick = () => {
                 body.style.top = '-31px'; // Adjust the position
-                removeEventListeners(); // Remove listeners after adjustment
+                window.removeEventListener('click', handleClick); // Remove listener after the first click
             };
     
-            // Add event listeners for different interaction types
-            const events = ['click', 'keydown', 'mousemove', 'touchstart'];
-            events.forEach(event => window.addEventListener(event, handleInteraction, { once: true }));
-    
-            // Clean up after the first interaction
-            const removeEventListeners = () => {
-                events.forEach(event => window.removeEventListener(event, handleInteraction));
-            };
+            // Add click event listener
+            window.addEventListener('click', handleClick);
         }
 
-    // Initialize adjustment on page load
-    adjustTopOnInteraction();
+        // Initialize adjustment on page load
+        adjustTopOnInteraction();
     
         // Function to get URL parameters
         function getUrlParams() {
