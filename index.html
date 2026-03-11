@@ -16,29 +16,24 @@
             flex-direction: column;
             font-family: "Inter", 'Open Sans', sans-serif !important;
             overflow: hidden; 
-            /* Light gray background to match YCBM's outer background */
             background-color: #f7f7f7; 
             align-items: center;
         }
 
-        /* --- Weather Section (Styled to match YCBM Card) --- */
+        /* --- Weather Section --- */
         #weather-container {
             width: 100%;
-            max-width: 800px; /* Matches YCBM width */
+            max-width: 800px; 
             height: 100px;
-            margin: 20px auto 10px auto; /* Spacing from top and iframe */
+            margin: 20px auto 10px auto; 
             position: relative;
             flex-shrink: 0;
-            
-            /* YCBM Card Styling Recreated */
             background-color: #FFFFFF;
-            border: 1px solid #303030; /* Subtle border */
-            border-top: 8px solid #303030; /* The thick black top border */
-            border-radius: 8px; /* Rounded corners */
-            
-            /* Add some padding so the widget doesn't touch the edges */
+            border: 1px solid #303030; 
+            border-top: 8px solid #303030; 
+            border-radius: 8px; 
             padding: 10px 15px; 
-            box-sizing: border-box; /* Keeps padding inside the width */
+            box-sizing: border-box; 
         }
 
         #ww_aafa8719d1cd6 { 
@@ -48,30 +43,33 @@
         }
 
         /* --- Virtual Buttons Container --- */
-        /* Created a container to ensure perfect centering over the widget content */
         .virtual-button-wrapper {
             position: absolute;
             top: 10px;
-            left: 15px; /* Accounts for the container padding */
-            right: 15px; /* Accounts for the container padding */
+            left: 15px; 
+            right: 15px; 
             height: 75px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around; /* Changed from space-between to space-around */
+            align-items: center; /* Vertically centers the hover boxes */
         }
 
         .virtual-button {
-            width: 16%; /* Evenly spaced */
+            /* Flex 1 makes them grow evenly to fill the exact space of the columns beneath them */
+            flex: 1; 
             height: 100%;
+            max-width: 70px; /* Prevents the hover box from getting too wide on large screens */
             opacity: 0;
             z-index: 10;
-            border-radius: 6px;
+            border-radius: 8px; /* Slightly softer corners for the hover effect */
+            margin: 0 5px; /* Adds a tiny gap between hover targets */
         }
         
         .virtual-button:hover { 
             opacity: 1; 
-            box-shadow: 0 0 6px rgba(0,0,0,0.1); 
+            box-shadow: 0 0 8px rgba(0,0,0,0.08); /* Softer, slightly larger shadow */
             z-index: 3000; 
-            background-color: rgba(0,0,0,0.02); /* Very slight hover effect */
+            background-color: rgba(0,0,0,0.03); /* Marginally darker for better visibility */
         }
 
         /* --- Booking Section --- */
@@ -130,7 +128,7 @@
                 // Hide Temp
                 widget.querySelectorAll('.temp').forEach(el => el.style.display = 'none');
                 // Fix Margins
-                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0');
+                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0 auto'); // Added auto to help center SVGs
                 // Remove Watermark
                 const info = widget.querySelector('.ww_info');
                 if (info) info.remove();
