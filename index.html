@@ -6,13 +6,20 @@
     <title>Nexvia Embed</title>
 
     <style>
-        body {
-            position: absolute;
-            width: 600px;
+        /* Reset margins and set full height to avoid collapse */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Prevents double scrollbars */
         }
 
+        /* Target the iframe injected by the YCB script */
         iframe {
-            height: 100vh;
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
         }
     </style>
 </head>
@@ -20,27 +27,25 @@
 
     <script>
         // Function to adjust top on interaction
+        // NOTE: If the user clicks inside the YouCanBookMe iframe, 
+        // this event might not fire due to cross-origin security.
         function adjustTopOnClick() {
             const body = document.body;
             
-            // Event listener for the first click
             const handleClick = () => {
-                body.style.top = '-31px'; // Adjust the position
-                window.removeEventListener('click', handleClick); // Remove listener after the first click
+                body.style.transform = 'translateY(-31px)'; // Transform is generally smoother than 'top'
+                window.removeEventListener('click', handleClick); 
             };
             
-            // Add click event listener
             window.addEventListener('click', handleClick);
         }
 
-        // Initialize adjustment on page load
         adjustTopOnClick();
 
         // Function to inject the embed script
         function loadEmbed() {
-            const domain = 'nexvia-photosession'; // Keep your base domain here
+            const domain = 'nexvia-photosession'; 
 
-            // Create and insert the embed script dynamically
             const script = document.createElement('script');
             script.src = 'https://embed.ycb.me';
             script.async = true;
@@ -49,7 +54,6 @@
             document.body.appendChild(script);
         }
 
-        // Initial content load
         loadEmbed();
     </script>
 </body>
