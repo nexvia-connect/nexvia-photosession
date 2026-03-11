@@ -6,6 +6,7 @@
     <title>Nexvia Embed</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Main Page Layout */
         html, body {
             margin: 0;
             padding: 0;
@@ -13,48 +14,75 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            font-family: 'Open Sans', sans-serif !important;
+            font-family: "Inter", 'Open Sans', sans-serif !important;
             overflow: hidden; 
-            background-color: transparent;
+            /* Light gray background to match YCBM's outer background */
+            background-color: #f7f7f7; 
+            align-items: center;
         }
 
-        /* Weather Section */
+        /* --- Weather Section (Styled to match YCBM Card) --- */
         #weather-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 800px; /* Matches YCBM width */
             height: 100px;
-            margin: 0 auto;
+            margin: 20px auto 10px auto; /* Spacing from top and iframe */
             position: relative;
             flex-shrink: 0;
-            padding: 5px 0;
+            
+            /* YCBM Card Styling Recreated */
+            background-color: #FFFFFF;
+            border: 1px solid #e0e0e0; /* Subtle border */
+            border-top: 4px solid #303030; /* The thick black top border */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.08); /* Soft shadow */
+            
+            /* Add some padding so the widget doesn't touch the edges */
+            padding: 10px 15px; 
+            box-sizing: border-box; /* Keeps padding inside the width */
         }
 
-        #ww_aafa8719d1cd6 { width: 100%; height: 100%; overflow: hidden; }
+        #ww_aafa8719d1cd6 { 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+        }
 
-        .virtual-button {
+        /* --- Virtual Buttons Container --- */
+        /* Created a container to ensure perfect centering over the widget content */
+        .virtual-button-wrapper {
             position: absolute;
             top: 10px;
-            width: calc(16.666% - 6px); 
-            height: 70px;
+            left: 15px; /* Accounts for the container padding */
+            right: 15px; /* Accounts for the container padding */
+            height: 75px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .virtual-button {
+            width: 16%; /* Evenly spaced */
+            height: 100%;
             opacity: 0;
             z-index: 10;
+            border-radius: 6px;
         }
-        .virtual-button:hover { opacity: 1; box-shadow: 0 0 6px rgba(0,0,0,0.1); z-index: 3000; }
-        .button1 { left: 3px; }
-        .button2 { left: calc(16.66% + 3px); }
-        .button3 { left: calc(33.32% + 3px); }
-        .button4 { left: calc(49.98% + 3px); }
-        .button5 { left: calc(66.64% + 3px); }
-        .button6 { left: calc(83.3% + 3px); }
+        
+        .virtual-button:hover { 
+            opacity: 1; 
+            box-shadow: 0 0 6px rgba(0,0,0,0.1); 
+            z-index: 3000; 
+            background-color: rgba(0,0,0,0.02); /* Very slight hover effect */
+        }
 
-        /* Booking Section */
+        /* --- Booking Section --- */
         #ycb-iframe {
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
             flex-grow: 1;
             border: none;
-            display: block; /* Ensures it isn't hidden */
+            display: block;
             min-height: 500px;
         }
     </style>
@@ -62,17 +90,21 @@
 <body>
 
     <div id="weather-container">
-        <div id="ww_aafa8719d1cd6" v='1.3' loc='id' a='{"t":"responsive","lang":"en","sl_lpl":1,"ids":["wl1775"],"font":"Open+Sans","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"rgba(255,255,255,1)","cl_font":"rgba(51,51,51,1)","cl_cloud":"rgba(238,238,238,1)","cl_persp":"rgba(31,64,153,0.30500000000000005)","cl_sun":"rgba(252,219,51,1)","cl_moon":"#FFC107","cl_thund":"rgba(252,51,102,1)","cl_odd":"#00000000","el_ctm":3,"el_cwi":3,"el_nme":3}'>
+        
+        <div id="ww_aafa8719d1cd6" v='1.3' loc='id' a='{"t":"responsive","lang":"en","sl_lpl":1,"ids":["wl1775"],"font":"Open+Sans","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF","cl_font":"rgba(51,51,51,1)","cl_cloud":"rgba(238,238,238,1)","cl_persp":"rgba(31,64,153,0.30500000000000005)","cl_sun":"rgba(252,219,51,1)","cl_moon":"#FFC107","cl_thund":"rgba(252,51,102,1)","cl_odd":"#00000000","el_ctm":3,"el_cwi":3,"el_nme":3}'>
             <a href="https://weatherwidget.org/" id="ww_aafa8719d1cd6_u" target="_blank">Widget weather</a>
         </div>
         <script async src="https://app2.weatherwidget.org/js/?id=ww_aafa8719d1cd6"></script>
         
-        <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=1" class="virtual-button button1" target="_blank"></a>
-        <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=2" class="virtual-button button2" target="_blank"></a>
-        <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=3" class="virtual-button button3" target="_blank"></a>
-        <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=4" class="virtual-button button4" target="_blank"></a>
-        <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=5" class="virtual-button button5" target="_blank"></a>
-        <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=6" class="virtual-button button6" target="_blank"></a>
+        <div class="virtual-button-wrapper">
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=1" class="virtual-button" target="_blank"></a>
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=2" class="virtual-button" target="_blank"></a>
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=3" class="virtual-button" target="_blank"></a>
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=4" class="virtual-button" target="_blank"></a>
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=5" class="virtual-button" target="_blank"></a>
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=6" class="virtual-button" target="_blank"></a>
+        </div>
+
     </div>
 
     <iframe id="ycb-iframe" frameborder="0" allowtransparency="true"></iframe>
@@ -85,10 +117,8 @@
             const urlParams = window.location.search;
             const iframe = document.getElementById('ycb-iframe');
             
-            // Construct the new source. If no params, just load base URL.
             const newSrc = ycbBaseUrl + urlParams;
             
-            // Only update if the source actually changed to prevent flickering
             if (iframe.src !== newSrc) {
                 iframe.src = newSrc;
             }
@@ -111,7 +141,7 @@
         // Initialize everything
         window.onload = () => {
             updateIframe();
-            setInterval(modifyWidget, 1000); // Keep widget clean as it loads
+            setInterval(modifyWidget, 500); 
         };
 
         // URL Watcher
