@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexvia Photo Session</title>
+    <title>Nexvia Embed</title>
 
     <style>
         body {
@@ -14,67 +14,31 @@
         iframe {
             height: 100vh;
         }
-
-        .debug-info {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            display: none;
-        }
     </style>
 </head>
 <body>
 
-    <div class="debug-info" id="debug-info">
-        PHOTOSESSIONTYPE: <span id="photosession-type">Loading...</span>
-    </div>
-
-<script>
+    <script>
         // Function to adjust top on interaction
         function adjustTopOnClick() {
             const body = document.body;
-    
+            
             // Event listener for the first click
             const handleClick = () => {
                 body.style.top = '-31px'; // Adjust the position
                 window.removeEventListener('click', handleClick); // Remove listener after the first click
             };
-    
+            
             // Add click event listener
             window.addEventListener('click', handleClick);
         }
 
         // Initialize adjustment on page load
         adjustTopOnClick();
-    
-        // Function to get URL parameters
-        function getUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('PHOTOSESSIONTYPE');
-        }
 
-        // Function to update the page content based on URL changes
-        function updateContent() {
-            // Get the PHOTOSESSIONTYPE value from the URL parameters
-            const photoSessionType = getUrlParams();
-            
-            // Display the PHOTOSESSIONTYPE value in the debug-info div
-            document.getElementById('photosession-type').innerText = photoSessionType;
-
-            // Determine the domain value based on the PHOTOSESSIONTYPE
-            const domain = 'nexvia-photosession';
-
-            // Remove existing embed script if it exists
-            const existingScript = document.querySelector('script[data-domain]');
-            if (existingScript) {
-                existingScript.remove();
-            }
+        // Function to inject the embed script
+        function loadEmbed() {
+            const domain = 'nexvia-photosession'; // Keep your base domain here
 
             // Create and insert the embed script dynamically
             const script = document.createElement('script');
@@ -85,56 +49,8 @@
             document.body.appendChild(script);
         }
 
-        // Function to observe URL changes
-        function observeUrlChanges() {
-            // Store the current URL
-            let currentUrl = window.location.href;
-
-            // Set up a MutationObserver to detect changes to the URL
-            const observer = new MutationObserver(() => {
-                if (currentUrl !== window.location.href) {
-                    currentUrl = window.location.href;
-                    updateContent(); // Update content when URL changes
-                }
-            });
-
-            // Observe changes in the document for added or removed nodes
-            observer.observe(document, { childList: true, subtree: true });
-        }
-
-        // Function to listen for popstate events
-        function listenForPopstateChanges() {
-            window.addEventListener('popstate', () => {
-                updateContent(); // Update content when the history state changes
-            });
-        }
-
-        // Function to listen for hash changes (if applicable)
-        function listenForHashChanges() {
-            window.addEventListener('hashchange', () => {
-                updateContent(); // Update content when the hash changes
-            });
-        }
-
-        // Fallback: Interval check for URL changes
-        function checkUrlPeriodically() {
-            let currentUrl = window.location.href;
-            setInterval(() => {
-                if (currentUrl !== window.location.href) {
-                    currentUrl = window.location.href;
-                    updateContent(); // Update content when URL changes
-                }
-            }, 200);
-        }
-
-        // Initial content update
-        updateContent();
-
-        // Listen for different types of changes
-        listenForPopstateChanges();    // Use popstate event listener
-        listenForHashChanges();        // Use hashchange event listener if applicable
-        observeUrlChanges();           // Use MutationObserver as a fallback
-        checkUrlPeriodically();        // Final fallback: interval check
+        // Initial content load
+        loadEmbed();
     </script>
 </body>
 </html>
