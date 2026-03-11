@@ -16,7 +16,6 @@
             flex-direction: column;
             font-family: "Inter", 'Open Sans', sans-serif !important;
             overflow: hidden; 
-            /* Light gray background to match YCBM's outer background */
             background-color: #f7f7f7; 
             align-items: center;
         }
@@ -24,22 +23,20 @@
         /* --- Weather Section (Styled to match YCBM Card) --- */
         #weather-container {
             width: 100%;
-            max-width: 800px; /* Matches YCBM width */
+            max-width: 800px;
             height: 100px;
-            margin: 20px auto 10px auto; /* Spacing from top and iframe */
+            margin: 10px auto 10px auto;
             position: relative;
             flex-shrink: 0;
             
-            /* YCBM Card Styling Recreated */
             background-color: #FFFFFF;
-            border: 1px solid #e0e0e0; /* Subtle border */
-            border-top: 8px solid #303030; /* The thick black top border */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.08); /* Soft shadow */
+            border: 1px solid #e0e0e0;
+            border-top: 4px solid #303030;
+            border-radius: 8px;
+            box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.08);
             
-            /* Add some padding so the widget doesn't touch the edges */
             padding: 10px 15px; 
-            box-sizing: border-box; /* Keeps padding inside the width */
+            box-sizing: border-box;
         }
 
         #ww_aafa8719d1cd6 { 
@@ -52,30 +49,26 @@
         .virtual-button-wrapper {
             position: absolute;
             top: 10px;
-            left: 15px; /* Accounts for the container padding */
-            right: 15px; /* Accounts for the container padding */
+            left: 15px; 
+            right: 15px; 
             height: 75px;
             display: flex;
-            justify-content: space-around; /* Distributes the 7 buttons evenly */
-            align-items: center;
+            justify-content: space-between;
         }
 
         .virtual-button {
-            flex: 1; /* Makes all 7 buttons grow evenly to match the 7 weather columns */
+            flex: 1; /* This makes the buttons perfectly wide, touching edge-to-edge */
             height: 100%;
-            max-width: 65px; /* Keeps the hover box tight around the icon */
             opacity: 0;
             z-index: 10;
-            border-radius: 8px;
-            margin: 0 2px; /* Tiny gap between hover zones */
-            cursor: pointer;
+            border-radius: 6px;
         }
         
         .virtual-button:hover { 
             opacity: 1; 
-            box-shadow: 0 0 8px rgba(0,0,0,0.08); 
+            box-shadow: 0 0 6px rgba(0,0,0,0.1); 
             z-index: 3000; 
-            background-color: rgba(0,0,0,0.03); /* Faint gray hover effect */
+            background-color: rgba(0,0,0,0.02); 
         }
 
         /* --- Booking Section --- */
@@ -117,7 +110,6 @@
         const ycbBaseUrl = "https://nexvia-photosession.youcanbook.me/";
         let currentUrl = window.location.href;
 
-        // --- Iframe URL Manager ---
         function updateIframe() {
             const urlParams = window.location.search;
             const iframe = document.getElementById('ycb-iframe');
@@ -129,30 +121,27 @@
             }
         }
 
-        // --- Weather Logic & Cleanup ---
+        // --- Weather Logic ---
         function modifyWidget() {
             const widget = document.getElementById('ww_aafa8719d1cd6');
             if (widget) {
-                // Hide Temp values
+                // Hide Temp
                 widget.querySelectorAll('.temp').forEach(el => el.style.display = 'none');
-                
-                // Force centering on the SVGs to match our flexbox overlay
-                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0 auto'); 
-                
-                // Remove the "Widget weather" watermark/info
+                // Fix Margins
+                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0');
+                // Remove Watermark
                 const info = widget.querySelector('.ww_info');
                 if (info) info.remove();
             }
         }
 
-        // Initialize everything on load
+        // Initialize everything
         window.onload = () => {
             updateIframe();
-            // Run the widget cleanup aggressively as it loads
             setInterval(modifyWidget, 500); 
         };
 
-        // Fallback URL Watcher (crucial for dynamic form platforms)
+        // URL Watcher
         setInterval(() => {
             if (currentUrl !== window.location.href) {
                 currentUrl = window.location.href;
@@ -161,7 +150,6 @@
         }, 500);
 
         window.addEventListener('popstate', updateIframe);
-        window.addEventListener('hashchange', updateIframe);
     </script>
 </body>
 </html>
