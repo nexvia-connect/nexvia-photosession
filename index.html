@@ -68,7 +68,7 @@
             document.getElementById('photosession-type').innerText = photoSessionType;
 
             // Determine the domain value based on the PHOTOSESSIONTYPE
-            const domain = (photoSessionType && photoSessionType === 'Regular') ? 'nexvia-photosession' : 'nexvia-photoshowcasesession';
+            const domain = 'nexvia-photosession';
 
             // Remove existing embed script if it exists
             const existingScript = document.querySelector('script[data-domain]');
