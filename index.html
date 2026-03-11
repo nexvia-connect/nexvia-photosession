@@ -14,11 +14,15 @@
             height: 100vh; 
             overflow: hidden; 
             background-color: transparent;
+            /* Centers the iframe horizontally if Jotform is wider than 800px */
+            display: flex;
+            justify-content: center;
         }
 
-        /* Make the iframe fill the entire screen */
+        /* Make the iframe fill the space but cap at 800px */
         iframe {
             width: 100%;
+            max-width: 800px;
             height: 100%;
             border: none;
         }
