@@ -16,24 +16,30 @@
             flex-direction: column;
             font-family: "Inter", 'Open Sans', sans-serif !important;
             overflow: hidden; 
+            /* Light gray background to match YCBM's outer background */
             background-color: #f7f7f7; 
             align-items: center;
         }
 
-        /* --- Weather Section --- */
+        /* --- Weather Section (Styled to match YCBM Card) --- */
         #weather-container {
             width: 100%;
-            max-width: 800px; 
+            max-width: 800px; /* Matches YCBM width */
             height: 100px;
-            margin: 20px auto 10px auto; 
+            margin: 20px auto 10px auto; /* Spacing from top and iframe */
             position: relative;
             flex-shrink: 0;
+            
+            /* YCBM Card Styling Recreated */
             background-color: #FFFFFF;
-            border: 1px solid #303030; 
-            border-top: 8px solid #303030; 
-            border-radius: 8px; 
+            border: 1px solid #e0e0e0; /* Subtle border */
+            border-top: 8px solid #303030; /* The thick black top border */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.08); /* Soft shadow */
+            
+            /* Add some padding so the widget doesn't touch the edges */
             padding: 10px 15px; 
-            box-sizing: border-box; 
+            box-sizing: border-box; /* Keeps padding inside the width */
         }
 
         #ww_aafa8719d1cd6 { 
@@ -46,30 +52,30 @@
         .virtual-button-wrapper {
             position: absolute;
             top: 10px;
-            left: 15px; 
-            right: 15px; 
+            left: 15px; /* Accounts for the container padding */
+            right: 15px; /* Accounts for the container padding */
             height: 75px;
             display: flex;
-            justify-content: space-around; /* Changed from space-between to space-around */
-            align-items: center; /* Vertically centers the hover boxes */
+            justify-content: space-around; /* Distributes the 7 buttons evenly */
+            align-items: center;
         }
 
         .virtual-button {
-            /* Flex 1 makes them grow evenly to fill the exact space of the columns beneath them */
-            flex: 1; 
+            flex: 1; /* Makes all 7 buttons grow evenly to match the 7 weather columns */
             height: 100%;
-            max-width: 70px; /* Prevents the hover box from getting too wide on large screens */
+            max-width: 65px; /* Keeps the hover box tight around the icon */
             opacity: 0;
             z-index: 10;
-            border-radius: 8px; /* Slightly softer corners for the hover effect */
-            margin: 0 5px; /* Adds a tiny gap between hover targets */
+            border-radius: 8px;
+            margin: 0 2px; /* Tiny gap between hover zones */
+            cursor: pointer;
         }
         
         .virtual-button:hover { 
             opacity: 1; 
-            box-shadow: 0 0 8px rgba(0,0,0,0.08); /* Softer, slightly larger shadow */
+            box-shadow: 0 0 8px rgba(0,0,0,0.08); 
             z-index: 3000; 
-            background-color: rgba(0,0,0,0.03); /* Marginally darker for better visibility */
+            background-color: rgba(0,0,0,0.03); /* Faint gray hover effect */
         }
 
         /* --- Booking Section --- */
@@ -100,6 +106,7 @@
             <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=4" class="virtual-button" target="_blank"></a>
             <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=5" class="virtual-button" target="_blank"></a>
             <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=6" class="virtual-button" target="_blank"></a>
+            <a href="https://www.yr.no/en/forecast/hourly-table/2-2960317/Luxembourg/Luxembourg/Ville%20de%20Luxembourg?i=7" class="virtual-button" target="_blank"></a>
         </div>
 
     </div>
@@ -110,6 +117,7 @@
         const ycbBaseUrl = "https://nexvia-photosession.youcanbook.me/";
         let currentUrl = window.location.href;
 
+        // --- Iframe URL Manager ---
         function updateIframe() {
             const urlParams = window.location.search;
             const iframe = document.getElementById('ycb-iframe');
@@ -121,27 +129,30 @@
             }
         }
 
-        // --- Weather Logic ---
+        // --- Weather Logic & Cleanup ---
         function modifyWidget() {
             const widget = document.getElementById('ww_aafa8719d1cd6');
             if (widget) {
-                // Hide Temp
+                // Hide Temp values
                 widget.querySelectorAll('.temp').forEach(el => el.style.display = 'none');
-                // Fix Margins
-                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0 auto'); // Added auto to help center SVGs
-                // Remove Watermark
+                
+                // Force centering on the SVGs to match our flexbox overlay
+                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0 auto'); 
+                
+                // Remove the "Widget weather" watermark/info
                 const info = widget.querySelector('.ww_info');
                 if (info) info.remove();
             }
         }
 
-        // Initialize everything
+        // Initialize everything on load
         window.onload = () => {
             updateIframe();
+            // Run the widget cleanup aggressively as it loads
             setInterval(modifyWidget, 500); 
         };
 
-        // URL Watcher
+        // Fallback URL Watcher (crucial for dynamic form platforms)
         setInterval(() => {
             if (currentUrl !== window.location.href) {
                 currentUrl = window.location.href;
@@ -150,6 +161,7 @@
         }, 500);
 
         window.addEventListener('popstate', updateIframe);
+        window.addEventListener('hashchange', updateIframe);
     </script>
 </body>
 </html>
