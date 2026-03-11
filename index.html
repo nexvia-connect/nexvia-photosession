@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexvia Embed</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    
     <style>
-        /* Main Page Layout */
         html, body {
             margin: 0;
             padding: 0;
@@ -24,37 +22,24 @@
         #weather-container {
             width: 100%;
             max-width: 800px;
-            height: 100px; /* Locked height */
+            height: 100px;
             margin: 0 auto;
             position: relative;
-            flex-shrink: 0; /* Keeps it from squishing */
+            flex-shrink: 0;
             padding: 5px 0;
         }
 
-        #ww_aafa8719d1cd6 {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
+        #ww_aafa8719d1cd6 { width: 100%; height: 100%; overflow: hidden; }
 
-        /* Weather Virtual Buttons */
         .virtual-button {
-            margin: 0;
-            margin-top: 10px;
             position: absolute;
-            top: 0;
+            top: 10px;
             width: calc(16.666% - 6px); 
             height: 70px;
             opacity: 0;
-            border-radius: 8px;
             z-index: 10;
         }
-        .virtual-button:hover {
-            box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
-            opacity: 1;
-            z-index: 3000;
-        }
-        
+        .virtual-button:hover { opacity: 1; box-shadow: 0 0 6px rgba(0,0,0,0.1); z-index: 3000; }
         .button1 { left: 3px; }
         .button2 { left: calc(16.66% + 3px); }
         .button3 { left: calc(33.32% + 3px); }
@@ -62,19 +47,15 @@
         .button5 { left: calc(66.64% + 3px); }
         .button6 { left: calc(83.3% + 3px); }
 
-        .date {
-            color: #999;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
         /* Booking Section */
         #ycb-iframe {
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
-            flex-grow: 1; /* Fills remaining space */
+            flex-grow: 1;
             border: none;
+            display: block; /* Ensures it isn't hidden */
+            min-height: 500px;
         }
     </style>
 </head>
@@ -97,110 +78,51 @@
     <iframe id="ycb-iframe" frameborder="0" allowtransparency="true"></iframe>
 
     <script>
-        // --- 1. Weather Widget Modifications ---
-        function hideTempDivs() {
-            const widgetDiv = document.getElementById('ww_aafa8719d1cd6');
-            if (widgetDiv) {
-                const tempDivs = widgetDiv.querySelectorAll('.temp');
-                tempDivs.length > 0 ? tempDivs.forEach(div => div.style.display = 'none') : setTimeout(hideTempDivs, 500);
-            }
-        }
-    
-        function updateSvgMargin() {
-            const widgetDiv = document.getElementById('ww_aafa8719d1cd6');
-            if (widgetDiv) {
-                const dayForecastSvgs = widgetDiv.querySelectorAll('.day-forecast svg');
-                dayForecastSvgs.length > 0 ? dayForecastSvgs.forEach(svg => svg.style.margin = '0') : setTimeout(updateSvgMargin, 500);
-            }
-        }
-
-        function updateDates() {
-            const widgetDiv = document.getElementById('ww_aafa8719d1cd6');
-            if (widgetDiv) {
-                const dateDivs = widgetDiv.querySelectorAll('.date');
-                if (dateDivs.length > 0) {
-                    const today = new Date();
-                    dateDivs.forEach((div, index) => {
-                        const currentDate = new Date(today);
-                        currentDate.setDate(today.getDate() + index);
-                        const options = { weekday: 'short', day: '2-digit', month: '2-digit' };
-                        div.innerHTML = currentDate.toLocaleDateString('en-GB', options).replace(/,/g, '');
-                    });
-                } else { setTimeout(updateDates, 500); }
-            }
-        }
-
-        function addHoverEffect() {
-            const buttons = document.querySelectorAll('.virtual-button');
-            const widgetDiv = document.getElementById('ww_aafa8719d1cd6');
-            
-            buttons.forEach((button, index) => {
-                button.addEventListener('mouseover', () => {
-                    const dates = widgetDiv.querySelectorAll('.date');
-                    const data = widgetDiv.querySelectorAll('.data');
-                    const adjIndex = index + 1;
-                    if (dates[adjIndex]) {
-                        dates[adjIndex].style.color = '#666';
-                        data[adjIndex].style.transition = 'transform 0.5s ease';
-                        data[adjIndex].style.transform = 'scale(1.35)';
-                    }
-                });
-                button.addEventListener('mouseout', () => {
-                    const dates = widgetDiv.querySelectorAll('.date');
-                    const data = widgetDiv.querySelectorAll('.data');
-                    const adjIndex = index + 1;
-                    if (dates[adjIndex]) {
-                        dates[adjIndex].style.color = '#999';
-                        data[adjIndex].style.transition = 'transform 0.3s ease';
-                        data[adjIndex].style.transform = 'scale(1)';
-                    }
-                });
-            });
-        }
-
-        function removeSpecificElement() {
-            const widgetDiv = document.getElementById('ww_aafa8719d1cd6');
-            if (widgetDiv) {
-                const specificElement = widgetDiv.querySelector('div.ww-box > div.ww_col2 > div:nth-child(25)');
-                if (specificElement) specificElement.remove();
-                const infoElement = widgetDiv.querySelector('div.ww_info');
-                if (infoElement) infoElement.remove();
-            } else { setTimeout(removeSpecificElement, 500); }
-        }
-
-        // --- 2. Booking Iframe URL Management ---
         const ycbBaseUrl = "https://nexvia-photosession.youcanbook.me/";
         let currentUrl = window.location.href;
 
         function updateIframe() {
             const urlParams = window.location.search;
-            document.getElementById('ycb-iframe').src = ycbBaseUrl + urlParams;
+            const iframe = document.getElementById('ycb-iframe');
+            
+            // Construct the new source. If no params, just load base URL.
+            const newSrc = ycbBaseUrl + urlParams;
+            
+            // Only update if the source actually changed to prevent flickering
+            if (iframe.src !== newSrc) {
+                iframe.src = newSrc;
+            }
         }
 
-        function checkUrlPeriodically() {
-            setInterval(() => {
-                if (currentUrl !== window.location.href) {
-                    currentUrl = window.location.href;
-                    updateIframe(); 
-                }
-            }, 500);
+        // --- Weather Logic ---
+        function modifyWidget() {
+            const widget = document.getElementById('ww_aafa8719d1cd6');
+            if (widget) {
+                // Hide Temp
+                widget.querySelectorAll('.temp').forEach(el => el.style.display = 'none');
+                // Fix Margins
+                widget.querySelectorAll('.day-forecast svg').forEach(el => el.style.margin = '0');
+                // Remove Watermark
+                const info = widget.querySelector('.ww_info');
+                if (info) info.remove();
+            }
         }
 
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize everything
+        window.onload = () => {
             updateIframe();
-            checkUrlPeriodically();
-            setTimeout(() => {
-                hideTempDivs();
-                updateSvgMargin();
-                updateDates();
-                addHoverEffect();
-                removeSpecificElement();
-            }, 600);
-        });
+            setInterval(modifyWidget, 1000); // Keep widget clean as it loads
+        };
+
+        // URL Watcher
+        setInterval(() => {
+            if (currentUrl !== window.location.href) {
+                currentUrl = window.location.href;
+                updateIframe(); 
+            }
+        }, 500);
 
         window.addEventListener('popstate', updateIframe);
-        window.addEventListener('hashchange', updateIframe);
     </script>
 </body>
 </html>
